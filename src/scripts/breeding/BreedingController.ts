@@ -97,7 +97,10 @@ class BreedingController {
         if (App.game.breeding.canAccess()) {
             $('#breedingModal').modal('show');
         } else {
-            Notifier.notify({ message: 'You do not have access to the Day Care yet.<br/><i>Clear route 5 first</i>', type: GameConstants.NotificationOption.warning });
+            Notifier.notify({
+                message: 'You do not have access to the Day Care yet.<br/><i>Clear route 5 first</i>',
+                type: NotificationConstants.NotificationOption.warning,
+            });
         }
     }
 
@@ -110,6 +113,19 @@ class BreedingController {
             eggType = GameConstants.PokemonToFossil[egg.pokemon];
         }
         return `assets/images/breeding/${eggType}.png`;
+    }
+
+    public static getEggCssClass(egg: Egg): string {
+        const animationType = Settings.getSetting('eggAnimation').observableValue();
+        if (animationType === 'none') {
+            return '';
+        }
+
+        if (egg.progress() >= 100) {
+            return 'hatching';
+        }
+
+        return (animationType === 'almost' && egg.stepsRemaining() <= 50) ?  'hatchingSoon' : '';
     }
 
     public static getEggSpots(pokemonName: string) {
