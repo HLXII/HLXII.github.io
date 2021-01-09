@@ -20,14 +20,25 @@ class StartSequenceRunner {
 
         const battlePokemon = new BattlePokemon(dataPokemon.name, dataPokemon.id, dataPokemon.type1, dataPokemon.type2, 10, 1, 100, 0, 0, shiny);
         Battle.enemyPokemon(battlePokemon);
+
+        // Show the help information text
+        Information.show({
+            steps: [
+                {
+                    element: document.getElementsByClassName('battle-view')[0],
+                    intro: 'Click here to deal "Click Attack" damage to Pokémon.',
+                },
+            ],
+        });
+
         // Set the function to call showCaughtMessage after pokemon is caught
         battlePokemon.isAlive = function () {
             if (battlePokemon.health() <= 0) {
-                setTimeout(
-                    function () {
-                        player.starter = StartSequenceRunner.starterPicked;
-                        StartSequenceRunner.showCaughtMessage();
-                    }, 1000);
+                setTimeout(() => {
+                    Information.hide();
+                    player.starter = StartSequenceRunner.starterPicked;
+                    StartSequenceRunner.showCaughtMessage();
+                }, 1000);
 
                 //reset the function so you don't call it too many times :)
                 //What a beautiful piece of code
@@ -49,14 +60,12 @@ class StartSequenceRunner {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function (event) {
-
-    $('#startSequenceModal').on('hidden.bs.modal', function () {
+document.addEventListener('DOMContentLoaded', () => {
+    $('#startSequenceModal').on('hidden.bs.modal', () => {
         $('#pickStarterModal').modal('show');
-
     });
 
-    $('#pickStarterModal').on('hidden.bs.modal', function () {
+    $('#pickStarterModal').on('hidden.bs.modal', () => {
         if (StartSequenceRunner.starterPicked == GameConstants.Starter.None) {
             StartSequenceRunner.noStarterCount++;
             const startersCount = StartSequenceRunner.noStarterCount >= 5 ? 'four' : 'three';
@@ -73,8 +82,16 @@ document.addEventListener('DOMContentLoaded', function (event) {
         }
     });
 
-    $('#starterCaughtModal').on('hidden.bs.modal', function () {
+    $('#starterCaughtModal').on('hidden.bs.modal', () => {
         Save.store(player);
         App.game.gameState = GameConstants.GameState.fighting;
+        Information.show({
+            steps: [
+                {
+                    element: document.getElementById('questDisplayContainer'),
+                    intro: 'Complete the tutorial quests to continue.',
+                },
+            ],
+        });
     });
 });

@@ -1,6 +1,6 @@
 class PartyController {
 
-    static getCaughtStatusByName(name: string): CaughtStatus {
+    static getCaughtStatusByName(name: PokemonNameType): CaughtStatus {
         return this.getCaughtStatus(PokemonHelper.getPokemonByName(name).id);
     }
 
@@ -22,7 +22,7 @@ class PartyController {
         if (pokemon) {
             for (const evolution of pokemon.evolutions) {
                 if (evolution instanceof StoneEvolution && evolution.stone == evoType && evolution.isSatisfied()) {
-                    const pStatus = this.getCaughtStatusByName(evolution.getEvolvedPokemon());
+                    const pStatus = this.getCaughtStatusByName(evolution.getEvolvedPokemon() as PokemonNameType);
                     if (pStatus < status) {
                         status = pStatus;
                     }
@@ -32,16 +32,13 @@ class PartyController {
         return status;
     }
 
-    public static getMaxLevelPokemonList(): Array<PartyPokemon> {
-        return App.game.party.caughtPokemon.filter((partyPokemon: PartyPokemon) => {
-            return !partyPokemon.breeding && partyPokemon.level >= 100;
-        });
-    }
-
-    static getSortedList = ko.pureComputed(function() {
+    static getSortedList = ko.pureComputed(() => {
         return App.game.party._caughtPokemon.sort(PartyController.compareBy(Settings.getSetting('partySort').observableValue(), Settings.getSetting('partySortDirection').observableValue()));
     }).extend({ rateLimit: 500 });
 
+    static sortList() {
+        App.game.party._caughtPokemon.sort(PartyController.compareBy(Settings.getSetting('partySort').observableValue(), Settings.getSetting('partySortDirection').observableValue()));
+    }
 
     public static compareBy(option: SortOptions, direction: boolean): (a: PartyPokemon, b: PartyPokemon) => number {
         return function (a, b) {

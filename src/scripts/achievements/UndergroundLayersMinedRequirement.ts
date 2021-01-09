@@ -1,8 +1,8 @@
-///<reference path="Requirement.ts"/>
+///<reference path="AchievementRequirement.ts"/>
 
-class UndergroundLayersMinedRequirement extends Requirement {
-    constructor( value: number, type: GameConstants.AchievementOption = GameConstants.AchievementOption.more) {
-        super(value, type);
+class UndergroundLayersMinedRequirement extends AchievementRequirement {
+    constructor(value: number, option: GameConstants.AchievementOption = GameConstants.AchievementOption.more) {
+        super(value, option, GameConstants.AchievementType['Underground Layers Mined']);
     }
 
     public getProgress() {
@@ -10,6 +10,7 @@ class UndergroundLayersMinedRequirement extends Requirement {
     }
 
     public hint(): string {
-        return `${this.requiredValue} layers need to be mined in the Underground.`;
+        const suffix = (this.requiredValue > 1) ? 's' : '';
+        return `${this.requiredValue} layer${suffix} need to be mined in the Underground.`;
     }
 }

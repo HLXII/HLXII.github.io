@@ -1,3 +1,5 @@
+/// <reference path="../declarations/DataStore/BadgeCase.d.ts" />
+
 class App {
 
     static readonly debug = false;
@@ -10,39 +12,44 @@ class App {
 
         Preload.load(App.debug).then(() => {
             ko.options.deferUpdates = true;
-            
+
             console.log(`[${GameConstants.formatDate(new Date())}] %cLoading Game Data..`, 'color:#8e44ad;font-weight:900;');
             // Needs to be loaded first so save data can be updated (specifically "player" data)
             const update = new Update();
+            const multiplier = new Multiplier();
 
-            UndergroundItem.initialize();
             player = Save.load();
             App.game = new Game(
                 update,
-                new Breeding(),
+                new Breeding(multiplier),
                 new Pokeballs(),
-                new Wallet(),
+                new Wallet(multiplier),
                 new KeyItems(),
                 new BadgeCase(),
-                new OakItems([20, 50, 100]),
-                new Party(),
+                new OakItems([20, 50, 100], multiplier),
+                new PokemonCategories(),
+                new Party(multiplier),
                 new Shards(),
-                new Farming(),
+                new Underground(),
+                new Farming(multiplier),
                 new LogBook(),
                 new RedeemableCodes(),
                 new Statistics(),
                 new Quests(),
                 new SpecialEvents(),
-                new Discord()
+                new Discord(),
+                new AchievementTracker(),
+                new Lab(multiplier),
+                multiplier
             );
 
             console.log(`[${GameConstants.formatDate(new Date())}] %cGame loaded`, 'color:#8e44ad;font-weight:900;');
-            Notifier.notify({ message: 'Game loaded', type: GameConstants.NotificationOption.info });
+            Notifier.notify({ message: 'Game loaded', type: NotificationConstants.NotificationOption.info });
 
             GameController.bindToolTips();
             GameController.addKeyListeners();
 
-            PokedexHelper.populateTypeFilters();
+            PokedexHelper.populateFilters();
             PokedexHelper.updateList();
 
             App.game.initialize();
