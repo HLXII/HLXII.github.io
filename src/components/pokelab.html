@@ -1,0 +1,144 @@
+<div aria-labelledby="myModalLabel" class="modal fade noselect" id="labModal" role="dialog"
+style="cursor:default" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header p-0">
+                <ul class="nav nav-tabs nav-fill w-100">
+                    <li class="nav-item"><a data-toggle='tab' class='nav-link active' href="#lab">Lab</a></li>
+                    <li class='nav-item'><a data-toggle='tab' class='nav-link' href="#research">Research</a></li>
+                    <li class='nav-item'><a data-toggle='tab' class='nav-link' href="#labHelp">Help</a></li>
+                </ul>
+            </div>
+
+            <div class="modal-body tab-content p-0">
+                <div id="lab" class="tab-pane fade in active show">
+                    <div style="position: relative;">
+                        <img style="width: 100%" data-bind="attr: { src: LabController.getLabImage() }">
+                        <!-- ko foreach: App.game.lab.placedMachines -->
+                        <div id="machineHover" style="position: absolute;"
+                            data-bind="style: {
+                                width: $data.machineWidth(),
+                                height: $data.machineHeight(),
+                                top: $data.machineTop(),
+                                left: $data.machineLeft(),
+                            },
+                            tooltip: { title: $data.tooltip(), trigger: 'hover', placement: 'left', html: true },
+                            click: function() { LabController.handleMachineClick($data); }">
+                            <img width="100%" height="100%" style="image-rendering: pixelated;" src="" data-bind="attr: { src: $data.machine.image }">
+                        </div>
+                        <!-- /ko -->
+                        <div id="labGrid" style="position: absolute;" data-bind="visible: LabController.selectedMachine() !== undefined">
+                            <table style="width:100%;height:100%;">
+                                <tbody data-bind="foreach: { data: new Array(LabController.labRows()), as: 'y'}">
+                                    <tr data-bind="foreach: { data: new Array(LabController.labColumns()), as: 'x'}">
+                                        <td data-bind="click: function() {LabController.placeMachine(xIndex(),yIndex());},
+                                            event: { mouseover: function() {LabController.updateHover(xIndex(),yIndex());}, mouseout: function() {LabController.clearHover();}}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- ko if: LabController.selectedMachine() !== undefined -->
+                        <div id="machineHover" style="position: absolute; pointer-events: none;"
+                            data-bind="visible: LabController.selectedMachineVisible(),
+                            style: {
+                                width: LabController.machineWidth(),
+                                height: LabController.machineHeight(),
+                                top: LabController.hoverTopMargin(),
+                                left: LabController.hoverLeftMargin(),
+                            }">
+                            <img width="100%" height="100%" style="image-rendering: pixelated;" src="" data-bind="attr: { src: LabController.selectedMachine().image }">
+                        </div>
+                        <!-- /ko -->
+                    </div>
+
+                    <div class="row no-gutters justify-content-around">
+                        <!-- ko if: LabController.selectedMachine() === undefined -->
+                        <button class="col-6 btn btn-primary m-1" onclick="LabController.openMachineListModal()">
+                            Add Machine
+                        </button>
+                        <!-- /ko -->
+                        <!-- ko if: LabController.selectedMachine() !== undefined -->
+                        <button class="col-6 btn btn-danger m-1"
+                            data-bind="click: function() { LabController.selectedMachine(undefined); },
+                            text: 'Cancel Add Machine ' + '(' + LabController.selectedMachine().amount + ' left)'">
+                            Cancel Add Machine
+                        </button>
+                        <!-- /ko -->
+                    </div>
+                </div>
+
+                <div id="research" class="tab-pane fade">
+                    <div class="row no-gutters justify-content-around">
+                        <button class="col-12 btn btn-primary m-1" onclick="LabController.openResearchListModal()">
+                            Research List
+                        </button>
+                    </div>
+                    <!-- ko foreach: App.game.lab.currentResearch() -->
+                    <div class="row no-gutters">
+                        <div class="col-8 text-left p-2">
+                            <span data-bind="text: $data.research.name">Name</span>
+                            <br>
+                            <small><span data-bind="text: $data.research.description">Description</span></small>
+                            <br>
+                            <!-- TODO: HLXII - Update with better formatting -->
+                            <span data-bind="text: 'Research Rate: ' + $data.workerRate">Research Rate</span>
+                        </div>
+                        <div class="col-4 p-1">
+                            <button class="btn btn-block btn-primary"
+                            data-bind="click: function() { LabController.openPartyListModal($index()); },
+                            enable: LabController.canAddWorkers($index())">
+                                Add Workers
+                            </button>
+                            <!-- ko if: $data.research.progress !== $data.research.points -->
+                            <button class="btn btn-block btn-danger" data-bind="click: function() { App.game.lab.cancelResearch($data.research, true); }">
+                                Cancel Research
+                            </button>
+                            <!-- /ko -->
+                            <!-- ko if: $data.research.progress === $data.research.points -->
+                            <button class="btn btn-block btn-success" data-bind="click: function() { App.game.lab.completeResearch($data.research); }">
+                                Complete Research
+                            </button>
+                            <!-- /ko -->
+                        </div>
+                        <!-- ko if: $data.workers.length -->
+                        <div class="col-12">
+                            <div id="hatcheryQueue" class="card-footer p-1" data-bind="foreach: $data.workers">
+                                <div class="queuePokemon clickable bg-primary" style="width: 8%" data-bind="click: function(){ $parent.removeWorker($index()) }">
+                                <img src="" data-bind="attr: { src: PokemonHelper.getImage(pokemonMap[$data], App.game.party.alreadyCaughtPokemon(pokemonMap[$data].id, true)) }">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <div class="col-12 progress">
+                            <div class="progress-bar" role="progressbar" data-bind="attr: { style: 'width:' + $data.research.progressPercent + '%' }"
+                            aria-valuemin="0" aria-valuemax="100">
+                                <span data-bind="text: $data.research.progressString">Progress</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <div data-bind="visible:  App.game.lab.currentResearch().length === 0">
+                        <p class="bg-success my-0">
+                            Open the Research List to start researching.
+                        </p>
+                    </div>
+                </div>
+                <div id="labHelp" class="tab-pane fade">
+                    TODO: HLXII - Add help text
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn mr-auto"
+                    data-bind="visible: LabController.additionalInfoTooltip().length !== 0,
+                    tooltip: {
+                        title: LabController.additionalInfoTooltip(),
+                        trigger: 'hover',
+                        placement:'top',
+                        html: true,
+                    }">ⓘ</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
