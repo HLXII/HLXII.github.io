@@ -13003,21 +13003,6 @@ style="cursor:default" tabindex="-1">
                         </div>
                         <!-- /ko -->
                     </div>
-
-                    <div class="row no-gutters justify-content-around">
-                        <!-- ko if: LabController.selectedMachine() === undefined -->
-                        <button class="col-6 btn btn-primary m-1" onclick="LabController.openMachineListModal()">
-                            Add Machine
-                        </button>
-                        <!-- /ko -->
-                        <!-- ko if: LabController.selectedMachine() !== undefined -->
-                        <button class="col-6 btn btn-danger m-1"
-                            data-bind="click: function() { LabController.selectedMachine(undefined); },
-                            text: 'Cancel Add Machine ' + '(' + LabController.selectedMachine().amount + ' left)'">
-                            Cancel Add Machine
-                        </button>
-                        <!-- /ko -->
-                    </div>
                 </div>
 
                 <div id="research" class="tab-pane fade">
@@ -13077,19 +13062,41 @@ style="cursor:default" tabindex="-1">
                     </div>
                 </div>
                 <div id="labHelp" class="tab-pane fade">
-                    TODO: HLXII - Add help text
+                    <h4><u>Laboratory</u></h4>
+                    <p>In the Laboratory you can use Machines and Research various topics</p>
+
+                    <h4><u>Lab</u></h4>
+                    <p>You can place Machines in the Lab that you can obtain from Research or Fabrication</p>
+
+                    <h><u>Research</u></h>
+                    <p>You can research various topics in in Lab. This assigning Pokémon in your party for researching, which means they won't be attacking in battle, and also can't be bred.</p>
+                    <p>The rate that the Pokémon contributes to researching scales by their attack.</p>
+                    <p>Various Research Topics can be unlocked as you progress through the game.</p>
+                    <p>Note that canceling Research will reset all progress.</p>
                 </div>
             </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn mr-auto"
-                    data-bind="visible: LabController.additionalInfoTooltip().length !== 0,
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn"
+                    data-bind="style: { opacity: LabController.additionalInfoTooltip().length !== 0 ? '' : '0%' },
                     tooltip: {
                         title: LabController.additionalInfoTooltip(),
                         trigger: 'hover',
                         placement:'top',
                         html: true,
                     }">ⓘ</button>
+                    <!-- ko if: LabController.selectedMachine() === undefined -->
+                    <button class="col-6 btn btn-primary m-1" onclick="LabController.openMachineListModal()">
+                        Add Machine
+                    </button>
+                    <!-- /ko -->
+                    <!-- ko if: LabController.selectedMachine() !== undefined -->
+                    <button class="col-6 btn btn-danger m-1"
+                        data-bind="click: function() { LabController.selectedMachine(undefined); },
+                        text: 'Cancel Add Machine ' + '(' + LabController.selectedMachine().amount + ' left)'">
+                        Cancel Add Machine
+                    </button>
+                    <!-- /ko -->
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
