@@ -4,4 +4,6 @@ enum ResearchType {
     'Machine',
     'Blueprint',
     'Fossil',
+    'Misc',
+    'Plate',
 }
