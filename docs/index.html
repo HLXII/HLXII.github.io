@@ -10937,7 +10937,7 @@ aria-labelledby="AchievementsModalLabel" aria-hidden="true">
                      <!-- ko if: Date.now() < endTime -->
                      <tr>
                        <td data-bind="text: title"></td>
-                       <td class="text-left" data-bind="text: description"></td>
+                       <td class="text-left" data-bind="html: description"></td>
                        <td class="text-left"><code data-bind="text: startTime.toLocaleString()">-</code></td>
                        <td class="text-left"><code data-bind="text: endTime.toLocaleString()">-</code></td>
                      </tr>
@@ -11159,7 +11159,7 @@ aria-labelledby="hallOfFameModalLabel" aria-hidden="true">
                                     <h3>
                                         <knockout data-bind="text: PokemonType[$index()]"></knockout>
                                         <div class="float-right">
-                                            <img data-bind='attr: { src: Shards.image($index()) }'/>
+                                            <img width=20px data-bind='attr: { src: Shards.image($index()) }'/>
                                             <knockout data-bind="text: App.game.shards.shardWallet[$index()]().toLocaleString('en-US')"></knockout>
                                         </div>
                                     </h3>
@@ -11452,12 +11452,12 @@ style="cursor:default" tabindex="-1">
                                 <tr>
                                     <td class='vertical-middle text-center' data-bind='text: player.getUndergroundItemAmount(item1.id)'></td>
                                     <td class='vertical-middle'>
-                                        <img class='mineInventoryItem' data-bind='attr: {src: "assets/images/underground/"+item1.id+".png"}'>
+                                        <img class='mineInventoryItem' data-bind='attr: {src: item1.imagePath }'>
                                     </td>
                                     <td class='vertical-middle' data-bind='text: amount1 + " × " + item1.name'></td>
                                     <td class='vertical-middle'>→</td>
                                     <td class='vertical-middle'>
-                                        <img class='mineInventoryItem' data-bind='attr: {src: "assets/images/underground/"+item2.id+".png"}'>
+                                        <img class='mineInventoryItem' data-bind='attr: {src: item2.imagePath }'>
                                     </td>
                                     <td class='vertical-middle' data-bind='text: amount2 + " × " + item2.name'></td>
                                     <td class='vertical-middle'>
@@ -11503,7 +11503,7 @@ style="cursor:default" tabindex="-1">
     <script type="text/html" id="treasureListTemplate">
         <tr data-bind='if: amount() > 0'>
             <td class='vertical-middle'>
-                <img class='mineInventoryItem' data-bind='attr:{ src: "assets/images/underground/"+id+".png" }'>
+                <img class='mineInventoryItem' data-bind='attr:{ src: Underground.getMineItemById(id).imagePath }'>
                 <span data-bind='text: "("+$data.amount()+")"'></span>
             </td>
             <td class='vertical-middle' data-bind='text: name'></td>
@@ -11724,9 +11724,9 @@ aria-labelledby="pokedexModalLabel">
                       <td class="text-left">Hatch Steps</td>
                       <td class="text-left tight"><code data-bind="text: App.game.breeding.getSteps(pokemonMap[$data].eggCycles).toLocaleString('en-US')">-</code></td>
                     </tr>
-                    <tr data-bind="if: ItemList[pokemonMap[$data].heldItem]">
+                    <tr data-bind="if: BagHandler.displayName(pokemonMap[$data].heldItem)">
                       <td class="text-left">Rare Hold Item</td>
-                      <td class="text-left tight"><code data-bind="text: GameConstants.humanifyString(ItemList[pokemonMap[$data].heldItem].name())"></code></td>
+                      <td class="text-left tight"><code data-bind="text: BagHandler.displayName(pokemonMap[$data].heldItem)"></code></td>
                     </tr>
                   </tbody>
                   <thead>
@@ -12954,58 +12954,18 @@ aria-labelledby="damageCalculatorModalLabel" aria-hidden="true">
 <div aria-labelledby="myModalLabel" class="modal fade noselect" id="labModal" role="dialog"
 style="cursor:default" tabindex="-1">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content" data-bind="let: { labVisible: ko.observable(false) }">
             <div class="modal-header p-0">
                 <ul class="nav nav-tabs nav-fill w-100">
-                    <li class="nav-item"><a data-toggle='tab' class='nav-link active' href="#lab">Lab</a></li>
-                    <li class='nav-item'><a data-toggle='tab' class='nav-link' href="#research">Research</a></li>
-                    <li class='nav-item'><a data-toggle='tab' class='nav-link' href="#labHelp">Help</a></li>
+                    <li class='nav-item'><a data-toggle='tab' class='nav-link active' href="#research" data-bind="click: function(){labVisible(false);}">Research</a></li>
+                    <li class="nav-item"><a data-toggle='tab' class='nav-link' href="#lab" data-bind="click: function(){labVisible(true);}">Lab</a></li>
+                    <li class='nav-item'><a data-toggle='tab' class='nav-link' href="#labHelp" data-bind="click: function(){labVisible(false);}">Help</a></li>
                 </ul>
             </div>
 
             <div class="modal-body tab-content p-0">
-                <div id="lab" class="tab-pane fade in active show">
-                    <div style="position: relative;">
-                        <img style="width: 100%" data-bind="attr: { src: LabController.getLabImage() }">
-                        <!-- ko foreach: App.game.lab.placedMachines -->
-                        <div id="machineHover" style="position: absolute;"
-                            data-bind="style: {
-                                width: $data.machineWidth(),
-                                height: $data.machineHeight(),
-                                top: $data.machineTop(),
-                                left: $data.machineLeft(),
-                            },
-                            tooltip: { title: $data.tooltip(), trigger: 'hover', placement: 'left', html: true },
-                            click: function() { LabController.handleMachineClick($data); }">
-                            <img width="100%" height="100%" style="image-rendering: pixelated;" src="" data-bind="attr: { src: $data.machine.image }">
-                        </div>
-                        <!-- /ko -->
-                        <div id="labGrid" style="position: absolute;" data-bind="visible: LabController.selectedMachine() !== undefined">
-                            <table style="width:100%;height:100%;">
-                                <tbody data-bind="foreach: { data: new Array(LabController.labRows()), as: 'y'}">
-                                    <tr data-bind="foreach: { data: new Array(LabController.labColumns()), as: 'x'}">
-                                        <td data-bind="click: function() {LabController.placeMachine(xIndex(),yIndex());},
-                                            event: { mouseover: function() {LabController.updateHover(xIndex(),yIndex());}, mouseout: function() {LabController.clearHover();}}"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- ko if: LabController.selectedMachine() !== undefined -->
-                        <div id="machineHover" style="position: absolute; pointer-events: none;"
-                            data-bind="visible: LabController.selectedMachineVisible(),
-                            style: {
-                                width: LabController.machineWidth(),
-                                height: LabController.machineHeight(),
-                                top: LabController.hoverTopMargin(),
-                                left: LabController.hoverLeftMargin(),
-                            }">
-                            <img width="100%" height="100%" style="image-rendering: pixelated;" src="" data-bind="attr: { src: LabController.selectedMachine().image }">
-                        </div>
-                        <!-- /ko -->
-                    </div>
-                </div>
 
-                <div id="research" class="tab-pane fade">
+                <div id="research" class="tab-pane fade in active show">
                     <div class="row no-gutters justify-content-around">
                         <button class="col-12 btn btn-primary m-1" onclick="LabController.openResearchListModal()">
                             Research List
@@ -13018,8 +12978,7 @@ style="cursor:default" tabindex="-1">
                             <br>
                             <small><span data-bind="text: $data.research.description">Description</span></small>
                             <br>
-                            <!-- TODO: HLXII - Update with better formatting -->
-                            <span data-bind="text: 'Research Rate: ' + $data.workerRate">Research Rate</span>
+                            <span data-bind="text: 'Research Rate: ' + $data.workerRate.toFixed(1)">Research Rate</span>
                         </div>
                         <div class="col-4 p-1">
                             <button class="btn btn-block btn-primary"
@@ -13061,18 +13020,62 @@ style="cursor:default" tabindex="-1">
                         </p>
                     </div>
                 </div>
+
+                <div id="lab" class="tab-pane fade">
+                    <div style="position: relative;">
+                        <img style="width: 100%" data-bind="attr: { src: LabController.getLabImage() }">
+                        <!-- ko foreach: App.game.lab.placedMachines -->
+                        <div id="machineHover" style="position: absolute;"
+                            data-bind="style: {
+                                width: $data.machineWidth(),
+                                height: $data.machineHeight(),
+                                top: $data.machineTop(),
+                                left: $data.machineLeft(),
+                            },
+                            tooltip: { title: $data.tooltip(), trigger: 'hover', placement: 'left', html: true },
+                            click: function() { LabController.handleMachineClick($data); }">
+                            <img width="100%" height="100%" style="image-rendering: pixelated;" src="" data-bind="attr: { src: $data.machine.image }">
+                        </div>
+                        <!-- /ko -->
+                        <div id="labGrid" style="position: absolute;" data-bind="visible: LabController.selectedMachine() !== undefined">
+                            <table style="width:100%;height:100%;">
+                                <tbody data-bind="foreach: { data: new Array(LabController.labRows()), as: 'y'}">
+                                    <tr data-bind="foreach: { data: new Array(LabController.labColumns()), as: 'x'}">
+                                        <td data-bind="click: function() {LabController.placeMachine(xIndex(),yIndex());},
+                                            event: { mouseover: function() {LabController.updateHover(xIndex(),yIndex());}, mouseout: function() {LabController.clearHover();}}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- ko if: LabController.selectedMachine() !== undefined -->
+                        <div id="machineHover" style="position: absolute; pointer-events: none;"
+                            data-bind="visible: LabController.selectedMachineVisible(),
+                            style: {
+                                width: LabController.machineWidth(),
+                                height: LabController.machineHeight(),
+                                top: LabController.hoverTopMargin(),
+                                left: LabController.hoverLeftMargin(),
+                            }">
+                            <img width="100%" height="100%" style="image-rendering: pixelated;" src="" data-bind="attr: { src: LabController.selectedMachine().image }">
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+
                 <div id="labHelp" class="tab-pane fade">
                     <h4><u>Laboratory</u></h4>
                     <p>In the Laboratory you can use Machines and Research various topics</p>
 
-                    <h4><u>Lab</u></h4>
-                    <p>You can place Machines in the Lab that you can obtain from Research or Fabrication</p>
-
                     <h><u>Research</u></h>
-                    <p>You can research various topics in in Lab. This assigning Pokémon in your party for researching, which means they won't be attacking in battle, and also can't be bred.</p>
+                    <p>You can research various topics in Lab by assigning Pokémon from your party to research. Researching Pokémon won't attack in battle, and also can't be bred.</p>
                     <p>The rate that the Pokémon contributes to researching scales by their attack.</p>
                     <p>Various Research Topics can be unlocked as you progress through the game.</p>
                     <p>Note that canceling Research will reset all progress.</p>
+
+                    <u>Lab</u>
+                    <p>You can place Machines in the Lab that you can obtain from Research or Fabrication</p>
+                    <p>Click on the machines to open a modal for configuring the machine or turning it on or off. You can also remove the machine from the Lab from this modal.</p>
+
                 </div>
             </div>
 
@@ -13085,6 +13088,7 @@ style="cursor:default" tabindex="-1">
                         placement:'top',
                         html: true,
                     }">ⓘ</button>
+                    <!-- ko if: labVisible -->
                     <!-- ko if: LabController.selectedMachine() === undefined -->
                     <button class="col-6 btn btn-primary m-1" onclick="LabController.openMachineListModal()">
                         Add Machine
@@ -13096,6 +13100,7 @@ style="cursor:default" tabindex="-1">
                         text: 'Cancel Add Machine ' + '(' + LabController.selectedMachine().amount + ' left)'">
                         Cancel Add Machine
                     </button>
+                    <!-- /ko -->
                     <!-- /ko -->
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
@@ -13315,6 +13320,24 @@ aria-labelledby="FabricatorModalLabel" aria-hidden="true">
             </div>
 
             <div class="modal-body position-static">
+                <div class="row justify-content-center">
+                    <li class="col-sm-4 col-md-3 col-lg-2 pokedexEntry" style="background: #e8e8f0">
+                        <span style="top: 0; border-top-left-radius: 6px; border-top-right-radius: 6px;" data-bind="text: Fabricator.blueprints[state.blueprint].name">Name</span>
+                            <div style="width: 100%; height: 120px;">
+                                <img src="" style="padding: 20px 0px; width:100%;height:100%;object-fit:contain;" data-bind="attr:{ src: BagHandler.image(Fabricator.blueprints[state.blueprint].fabrication) }">
+                            </div>
+                            <span style="bottom: 0; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px" data-bind="text: 'Amount: ' + BagHandler.amount(Fabricator.blueprints[state.blueprint].fabrication)()">Amount</span>
+                    </li>
+                </div>
+                <div class="row justify-content-center" data-bind="foreach: Fabricator.blueprints[state.blueprint].cost">
+                    <h4 class="col-6 col-sm-4 col-lg-2">
+                        <span style="display: inline;">
+                            <img style="height: 24px" data-bind="attr: { src: BagHandler.image($data.item) },
+                            tooltip: { title: BagHandler.displayName($data.item), trigger: 'hover', placement: 'top' }"/>
+                            <span data-bind="text: GameConstants.formatNumber($data.amount) + '/' + GameConstants.formatNumber(BagHandler.amount($data.item)())">0</span>
+                        </span>
+                    </h4>
+                </div>
                 <div class="row no-gutters">
                     <div class="btn-group btn-block col-6 dropdown">
                         <button type="button" class='btn btn-primary btn-block p-0'
@@ -13799,6 +13822,89 @@ aria-labelledby="GeneratorModalLabel" aria-hidden="true">
                     </div>
                 </div>
                 <!-- /ko -->
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn mr-auto"
+                    data-bind="css: { 'btn-danger': state.active, 'btn-success': !state.active },
+                    text: state.active ? 'Deactivate Machine' : 'Activate Machine',
+                    click: function() { state.toggleState(); }">Toggle State</button>
+                <button type="button" class="btn btn-danger"
+                    data-bind="click: function() { LabController.openedMachine().remove(); }">Remove Machine</button>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>
+
+
+
+<!-- Pokeball Factory Modal -->
+<div class="modal  fade" id="PokéballFactoryModal" tabindex="-1" role="dialog"
+aria-labelledby="PokéballFactoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <!-- ko if: LabController.openedMachine().state instanceof PokeballFactoryState -->
+        <div class="modal-content" style="overflow: initial" data-bind="with: LabController.openedMachine().state, as: 'state'">
+            <div class="modal-header">
+                <h5>Pokéball Factory</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body position-static">
+                <div class="row justify-content-center">
+                    <li class="col-sm-4 col-md-3 col-lg-2 pokedexEntry" style="background: #e8e8f0">
+                        <span style="top: 0; border-top-left-radius: 6px; border-top-right-radius: 6px;" data-bind="text: PokeballFactory.blueprints[state.blueprint].name">Name</span>
+                            <div style="width: 100%; height: 120px;">
+                                <img src="" style="padding: 20px 0px; width:100%;height:100%;object-fit:contain;" data-bind="attr:{ src: BagHandler.image(PokeballFactory.blueprints[state.blueprint].item) }">
+                            </div>
+                            <span style="bottom: 0; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px" data-bind="text: 'Amount: ' + BagHandler.amount(PokeballFactory.blueprints[state.blueprint].item)()">Amount</span>
+                    </li>
+                </div>
+                <div class="row justify-content-center" data-bind="foreach: PokeballFactory.blueprints[state.blueprint].cost">
+                    <h4 class="col-6 col-sm-4 col-lg-2">
+                        <span style="display: inline;">
+                            <img style="height: 24px" data-bind="attr: { src: BagHandler.image($data.item) },
+                            tooltip: { title: BagHandler.displayName($data.item), trigger: 'hover', placement: 'top' }"/>
+                            <span data-bind="text: GameConstants.formatNumber($data.amount) + '/' + GameConstants.formatNumber(BagHandler.amount($data.item)())">0</span>
+                        </span>
+                    </h4>
+                </div>
+                <div class="row no-gutters">
+                    <div class="btn-group btn-block col-6 dropdown">
+                        <button type="button" class='btn btn-primary btn-block p-0'
+                        data-bind="tooltip: {title: PokeballFactory.blueprints[state.blueprint].costTooltip, trigger: 'hover', placement: 'right', html: true}">
+                        <span data-bind="text: PokeballFactory.blueprints[state.blueprint].name">Blueprint Name</span>
+                        </button>
+                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split active"
+                            data-boundary="viewport" data-bind="text: '&nbsp;', enable: !state.active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" data-bind="foreach: PokeballFactory.getAvailableBlueprints()">
+                            <button class="dropdown-item" type="button"
+                                data-bind="text: $data.name,
+                                click: function() {state.blueprint = $data.type;}"></button>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="input-group">
+                            <input id="queueInput" type="number" class="outline-dark form-control form-control-number"
+                            value="0" min="0" required name="queueInput"
+                            data-bind="textInput: state.queueInput, enable: !state.active"/>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { state.setMaxQueue(); }, enable: !state.active">
+                                    Max
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" data-bind="attr: { style: 'width:' + state.progressPercent + '%' }"
+                    aria-valuemin="0" aria-valuemax="100">
+                        <span data-bind="text: state.progressString">Progress</span>
+                    </div>
+                </div>
             </div>
 
             <div class="modal-footer">
