@@ -13318,59 +13318,79 @@ aria-labelledby="FabricatorModalLabel" aria-hidden="true">
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div>
+                <ul class="nav nav-tabs nav-fill">
+                    <li class="nav-item"><a data-toggle='tab' class='nav-link active' href="#machineFabricator">Machine</a></li>
+                    <li class='nav-item'><a data-toggle='tab' class='nav-link' href="#machineFabricatorHelp">Help</a></li>
+                </ul>
+            </div>
 
-            <div class="modal-body position-static">
-                <div class="row justify-content-center">
-                    <li class="col-sm-4 col-md-3 col-lg-2 pokedexEntry" style="background: #e8e8f0">
-                        <span style="top: 0; border-top-left-radius: 6px; border-top-right-radius: 6px;" data-bind="text: Fabricator.blueprints[state.blueprint].name">Name</span>
-                            <div style="width: 100%; height: 120px;">
-                                <img src="" style="padding: 20px 0px; width:100%;height:100%;object-fit:contain;" data-bind="attr:{ src: BagHandler.image(Fabricator.blueprints[state.blueprint].fabrication) }">
-                            </div>
-                            <span style="bottom: 0; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px" data-bind="text: 'Amount: ' + BagHandler.amount(Fabricator.blueprints[state.blueprint].fabrication)()">Amount</span>
-                    </li>
-                </div>
-                <div class="row justify-content-center" data-bind="foreach: Fabricator.blueprints[state.blueprint].cost">
-                    <h4 class="col-6 col-sm-4 col-lg-2">
-                        <span style="display: inline;">
-                            <img style="height: 24px" data-bind="attr: { src: BagHandler.image($data.item) },
-                            tooltip: { title: BagHandler.displayName($data.item), trigger: 'hover', placement: 'top' }"/>
-                            <span data-bind="text: GameConstants.formatNumber($data.amount) + '/' + GameConstants.formatNumber(BagHandler.amount($data.item)())">0</span>
-                        </span>
-                    </h4>
-                </div>
-                <div class="row no-gutters">
-                    <div class="btn-group btn-block col-6 dropdown">
-                        <button type="button" class='btn btn-primary btn-block p-0'
-                        data-bind="tooltip: {title: Fabricator.blueprints[state.blueprint].costTooltip, trigger: 'hover', placement: 'right', html: true}">
-                        <span data-bind="text: Fabricator.blueprints[state.blueprint].name">Blueprint Name</span>
-                        </button>
-                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split active"
-                            data-boundary="viewport" data-bind="text: '&nbsp;', enable: !state.active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right" data-bind="foreach: Fabricator.getAvailableBlueprints()">
-                            <button class="dropdown-item" type="button"
-                                data-bind="text: $data.name,
-                                click: function() {state.blueprint = $data.type;}"></button>
-                        </div>
+            <div class="modal-body position-static tab-content">
+
+                <div id="machineFabricator"  class="tab-pane fade in active show">
+                    <div class="row justify-content-center">
+                        <li class="col-sm-4 col-md-3 col-lg-2 pokedexEntry" style="background: #e8e8f0">
+                            <span style="top: 0; border-top-left-radius: 6px; border-top-right-radius: 6px;" data-bind="text: Fabricator.blueprints[state.blueprint].name">Name</span>
+                                <div style="width: 100%; height: 120px;">
+                                    <img src="" style="padding: 20px 0px; width:100%;height:100%;object-fit:contain;" data-bind="attr:{ src: BagHandler.image(Fabricator.blueprints[state.blueprint].fabrication) }">
+                                </div>
+                                <span style="bottom: 0; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px" data-bind="text: 'Amount: ' + BagHandler.amount(Fabricator.blueprints[state.blueprint].fabrication)()">Amount</span>
+                        </li>
                     </div>
-                    <div class="col-6">
-                        <div class="input-group">
-                            <input id="queueInput" type="number" class="outline-dark form-control form-control-number"
-                            value="0" min="0" required name="queueInput"
-                            data-bind="textInput: state.queueInput, enable: !state.active"/>
-                            <div class="input-group-append">
-                                <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { state.setMaxQueue(); }, enable: !state.active">
-                                    Max
-                                </button>
+                    <div class="row justify-content-center" data-bind="foreach: Fabricator.blueprints[state.blueprint].cost">
+                        <h4 class="col-6 col-sm-4 col-lg-2">
+                            <span style="display: inline;">
+                                <img style="height: 24px" data-bind="attr: { src: BagHandler.image($data.item) },
+                                tooltip: { title: BagHandler.displayName($data.item), trigger: 'hover', placement: 'top' }"/>
+                                <span data-bind="text: GameConstants.formatNumber($data.amount) + '/' + GameConstants.formatNumber(BagHandler.amount($data.item)())">0</span>
+                            </span>
+                        </h4>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="btn-group btn-block col-6 dropdown">
+                            <button type="button" class='btn btn-primary btn-block p-0'
+                            data-bind="tooltip: {title: Fabricator.blueprints[state.blueprint].costTooltip, trigger: 'hover', placement: 'right', html: true}">
+                            <span data-bind="text: Fabricator.blueprints[state.blueprint].name">Blueprint Name</span>
+                            </button>
+                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split active"
+                                data-boundary="viewport" data-bind="text: '&nbsp;', enable: !state.active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" data-bind="foreach: Fabricator.getAvailableBlueprints()">
+                                <button class="dropdown-item" type="button"
+                                    data-bind="text: $data.name,
+                                    click: function() {state.blueprint = $data.type;}"></button>
                             </div>
                         </div>
+                        <div class="col-6">
+                            <div class="input-group">
+                                <input id="queueInput" type="number" class="outline-dark form-control form-control-number"
+                                value="0" min="0" required name="queueInput"
+                                data-bind="textInput: state.queueInput, enable: !state.active"/>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { state.setMaxQueue(); }, enable: !state.active">
+                                        Max
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-bind="attr: { style: 'width:' + state.progressPercent + '%' }"
+                        aria-valuemin="0" aria-valuemax="100">
+                            <span data-bind="text: state.progressString">Progress</span>
+                        </div>
                     </div>
                 </div>
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" data-bind="attr: { style: 'width:' + state.progressPercent + '%' }"
-                    aria-valuemin="0" aria-valuemax="100">
-                        <span data-bind="text: state.progressString">Progress</span>
-                    </div>
+
+                <div id="machineFabricatorHelp" class="tab-pane fade">
+                    <p>The Fabricator is used to create new Items and Machines.</p>
+
+                    <p>Fabricator Blueprints can be unlocked with Research.</p>
+
+                    <p>Set the number to the amount of fabrications for a Blueprint that you want, and then activate the machine.
+                    <br>Activating the machine will disable all configuration controls. To change the configuration, you must deactivate the machine.
+                    <br>The machine will run until either the required materials run out, or the queue number is 0.
+                    <br>Note that deactivating the machine will lose all current progress for the current fabrication.</p>
                 </div>
             </div>
 
@@ -13401,55 +13421,73 @@ aria-labelledby="PlateReconstructorModalLabel" aria-hidden="true">
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div>
+                <ul class="nav nav-tabs nav-fill">
+                    <li class="nav-item"><a data-toggle='tab' class='nav-link active' href="#machinePlateReconstructor">Machine</a></li>
+                    <li class='nav-item'><a data-toggle='tab' class='nav-link' href="#machinePlateReconstructorHelp">Help</a></li>
+                </ul>
+            </div>
 
-            <div class="modal-body position-static">
-                <div class="row justify-content-center">
-                    <h4 class="col-6 col-sm-4 col-lg-2">
-                        <span style="display: inline;">
-                            <img alt="Shards" style="height: 24px" data-bind="attr: { src: BagHandler.image({type: ItemType.shard, id: state.plateType}) }"/>
-                            <span data-bind="text: GameConstants.formatNumber(BagHandler.amount({type: ItemType.shard, id: state.plateType})())">0</span>
-                        </span>
-                    </h4>
-                    <h4 class="col-6 col-sm-4 col-lg-2">
-                        <span style="display: inline;">
-                            <img alt="Plates" style="height: 24px" data-bind="attr: { src: BagHandler.image({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)}) }"/>
-                            <span data-bind="text: GameConstants.formatNumber(BagHandler.amount({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)})())">0</span>
-                        </span>
-                    </h4>
-                </div>
-                <div class="row no-gutters">
-                    <div class="btn-group btn-block col-6 dropdown">
-                        <button type="button" class='btn btn-primary btn-block p-0'>
-                            <div style="display:inline"><img style="height: 24px" data-bind='attr: { src: BagHandler.image({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)}) }'/></div>
-                            <span data-bind="text: BagHandler.displayName({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)})">Plate Name</span>
-                        </button>
-                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split active"
-                            data-boundary="viewport" data-bind="text: '&nbsp;', enable: !state.active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right" data-bind="foreach: UndergroundItem.getPlateTypes()">
-                            <button class="dropdown-item" type="button"
-                                data-bind="text: BagHandler.displayName({type: ItemType.underground, id: UndergroundItem.getPlateIDByType($data)}),
-                                click: function() {state.plateType = $data;}"></button>
-                        </div>
+            <div class="modal-body position-static tab-content">
+
+                <div id="machinePlateReconstructor" class="tab-pane fade in active show">
+                    <div class="row justify-content-center">
+                        <h4 class="col-6 col-sm-4 col-lg-2">
+                            <span style="display: inline;">
+                                <img alt="Shards" style="height: 24px" data-bind="attr: { src: BagHandler.image({type: ItemType.shard, id: state.plateType}) }"/>
+                                <span data-bind="text: GameConstants.formatNumber(BagHandler.amount({type: ItemType.shard, id: state.plateType})())">0</span>
+                            </span>
+                        </h4>
+                        <h4 class="col-6 col-sm-4 col-lg-2">
+                            <span style="display: inline;">
+                                <img alt="Plates" style="height: 24px" data-bind="attr: { src: BagHandler.image({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)}) }"/>
+                                <span data-bind="text: GameConstants.formatNumber(BagHandler.amount({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)})())">0</span>
+                            </span>
+                        </h4>
                     </div>
-                    <div class="col-6">
-                        <div class="input-group">
-                            <input id="queueInput" type="number" class="outline-dark form-control form-control-number"
-                            value="0" min="0" required name="queueInput"
-                            data-bind="textInput: state.queueInput, enable: !state.active"/>
-                            <div class="input-group-append">
-                                <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { state.setMaxQueue(); }, enable: !state.active">
-                                    Max
-                                </button>
+                    <div class="row no-gutters">
+                        <div class="btn-group btn-block col-6 dropdown">
+                            <button type="button" class='btn btn-primary btn-block p-0'>
+                                <div style="display:inline"><img style="height: 24px" data-bind='attr: { src: BagHandler.image({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)}) }'/></div>
+                                <span data-bind="text: BagHandler.displayName({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)})">Plate Name</span>
+                            </button>
+                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split active"
+                                data-boundary="viewport" data-bind="text: '&nbsp;', enable: !state.active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" data-bind="foreach: UndergroundItem.getPlateTypes()">
+                                <button class="dropdown-item" type="button"
+                                    data-bind="text: BagHandler.displayName({type: ItemType.underground, id: UndergroundItem.getPlateIDByType($data)}),
+                                    click: function() {state.plateType = $data;}"></button>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group">
+                                <input id="queueInput" type="number" class="outline-dark form-control form-control-number"
+                                value="0" min="0" required name="queueInput"
+                                data-bind="textInput: state.queueInput, enable: !state.active"/>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { state.setMaxQueue(); }, enable: !state.active">
+                                        Max
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" data-bind="attr: { style: 'width:' + state.progressPercent + '%' }"
-                    aria-valuemin="0" aria-valuemax="100">
-                        <span data-bind="text: state.progressString">Progress</span>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-bind="attr: { style: 'width:' + state.progressPercent + '%' }"
+                        aria-valuemin="0" aria-valuemax="100">
+                            <span data-bind="text: state.progressString">Progress</span>
+                        </div>
                     </div>
+                </div>
+
+                <div id="machinePlateReconstructorHelp" class="tab-pane fade">
+                    <p>The Plate Reconstructor is used to reconstruct Plates from Shards.</p>
+
+                    <p>Set the number to the amount of plates to reconstruct, and then activate the machine.
+                    <br>Activating the machine will disable all configuration controls. To change the configuration, you must deactivate the machine.
+                    <br>The machine will run until either the required materials run out, or the queue number is 0.
+                    <br>Note that deactivating the machine will lose all current progress for the current reconstruction.</p>
                 </div>
             </div>
 
@@ -13480,55 +13518,73 @@ aria-labelledby="PlateDeconstructorModalLabel" aria-hidden="true">
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div>
+                <ul class="nav nav-tabs nav-fill">
+                    <li class="nav-item"><a data-toggle='tab' class='nav-link active' href="#machinePlateDeconstructor">Machine</a></li>
+                    <li class='nav-item'><a data-toggle='tab' class='nav-link' href="#machinePlateDeconstructorHelp">Help</a></li>
+                </ul>
+            </div>
 
-            <div class="modal-body position-static">
-                <div class="row justify-content-center">
-                    <h4 class="col-6 col-sm-4 col-lg-2">
-                        <span style="display: inline;">
-                            <img alt="Plates" style="height: 24px" data-bind="attr: { src: BagHandler.image({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)}) }"/>
-                            <span data-bind="text: GameConstants.formatNumber(BagHandler.amount({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)})())">0</span>
-                        </span>
-                    </h4>
-                    <h4 class="col-6 col-sm-4 col-lg-2">
-                        <span style="display: inline;">
-                            <img alt="Shards" style="height: 24px" data-bind="attr: { src: BagHandler.image({type: ItemType.shard, id: state.plateType}) }"/>
-                            <span data-bind="text: GameConstants.formatNumber(BagHandler.amount({type: ItemType.shard, id: state.plateType})())">0</span>
-                        </span>
-                    </h4>
-                </div>
-                <div class="row no-gutters">
-                    <div class="btn-group btn-block col-6 dropdown">
-                        <button type="button" class='btn btn-primary btn-block p-0'>
-                            <div style="display:inline"><img style="height: 24px" data-bind='attr: { src: BagHandler.image({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)}) }'/></div>
-                            <span data-bind="text: BagHandler.displayName({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)})">Plate Name</span>
-                        </button>
-                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split active"
-                            data-boundary="viewport" data-bind="text: '&nbsp;', enable: !state.active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right" data-bind="foreach: UndergroundItem.getPlateTypes()">
-                            <button class="dropdown-item" type="button"
-                                data-bind="text: BagHandler.displayName({type: ItemType.underground, id: UndergroundItem.getPlateIDByType($data)}),
-                                click: function() {state.plateType = $data;}"></button>
-                        </div>
+            <div class="modal-body position-static tab-content">
+
+                <div id="machinePlateDeconstructor" class="tab-pane fade in active show">
+                    <div class="row justify-content-center">
+                        <h4 class="col-6 col-sm-4 col-lg-2">
+                            <span style="display: inline;">
+                                <img alt="Plates" style="height: 24px" data-bind="attr: { src: BagHandler.image({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)}) }"/>
+                                <span data-bind="text: GameConstants.formatNumber(BagHandler.amount({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)})())">0</span>
+                            </span>
+                        </h4>
+                        <h4 class="col-6 col-sm-4 col-lg-2">
+                            <span style="display: inline;">
+                                <img alt="Shards" style="height: 24px" data-bind="attr: { src: BagHandler.image({type: ItemType.shard, id: state.plateType}) }"/>
+                                <span data-bind="text: GameConstants.formatNumber(BagHandler.amount({type: ItemType.shard, id: state.plateType})())">0</span>
+                            </span>
+                        </h4>
                     </div>
-                    <div class="col-6">
-                        <div class="input-group">
-                            <input id="queueInput" type="number" class="outline-dark form-control form-control-number"
-                            value="0" min="0" required name="queueInput"
-                            data-bind="textInput: state.queueInput, enable: !state.active"/>
-                            <div class="input-group-append">
-                                <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { state.setMaxQueue(); }, enable: !state.active">
-                                    Max
-                                </button>
+                    <div class="row no-gutters">
+                        <div class="btn-group btn-block col-6 dropdown">
+                            <button type="button" class='btn btn-primary btn-block p-0'>
+                                <div style="display:inline"><img style="height: 24px" data-bind='attr: { src: BagHandler.image({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)}) }'/></div>
+                                <span data-bind="text: BagHandler.displayName({type: ItemType.underground, id: UndergroundItem.getPlateIDByType(state.plateType)})">Plate Name</span>
+                            </button>
+                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split active"
+                                data-boundary="viewport" data-bind="text: '&nbsp;', enable: !state.active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" data-bind="foreach: UndergroundItem.getPlateTypes()">
+                                <button class="dropdown-item" type="button"
+                                    data-bind="text: BagHandler.displayName({type: ItemType.underground, id: UndergroundItem.getPlateIDByType($data)}),
+                                    click: function() {state.plateType = $data;}"></button>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group">
+                                <input id="queueInput" type="number" class="outline-dark form-control form-control-number"
+                                value="0" min="0" required name="queueInput"
+                                data-bind="textInput: state.queueInput, enable: !state.active"/>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { state.setMaxQueue(); }, enable: !state.active">
+                                        Max
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" data-bind="attr: { style: 'width:' + state.progressPercent + '%' }"
-                    aria-valuemin="0" aria-valuemax="100">
-                        <span data-bind="text: state.progressString">Progress</span>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-bind="attr: { style: 'width:' + state.progressPercent + '%' }"
+                        aria-valuemin="0" aria-valuemax="100">
+                            <span data-bind="text: state.progressString">Progress</span>
+                        </div>
                     </div>
+                </div>
+
+                <div id="machinePlateDeconstructorHelp" class="tab-pane fade">
+                    <p>The Plate Deconstructor is used to deconstruct Plates into Shards.</p>
+
+                    <p>Set the number to the amount of plates to deconstruct, and then activate the machine.
+                    <br>Activating the machine will disable all configuration controls. To change the configuration, you must deactivate the machine.
+                    <br>The machine will run until either the required materials run out, or the queue number is 0.
+                    <br>Note that deactivating the machine will lose all current progress for the current deconstruction.</p>
                 </div>
             </div>
 
@@ -13559,54 +13615,74 @@ aria-labelledby="FossilReviverModalLabel" aria-hidden="true">
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div>
+                <ul class="nav nav-tabs nav-fill">
+                    <li class="nav-item"><a data-toggle='tab' class='nav-link active' href="#machineFossilReviver">Machine</a></li>
+                    <li class='nav-item'><a data-toggle='tab' class='nav-link' href="#machineFossilReviverHelp">Help</a></li>
+                </ul>
+            </div>
 
-            <div class="modal-body position-static">
-                <div class="row no-gutters justify-content-center">
-                    <!-- ko foreach: state._fossils -->
-                    <div class="col-3 eggSlot">
-                        <div class="content">
-                            <div style="margin-top: 20px;">
-                                <!-- ko if: $data.fossil -->
-                                <img data-bind="attr: { src: FossilReviver.getImage($data.data.name) }"/>
-                                <div class="progress">
-                                    <div class="progress-bar bg-success" role="progressbar"
-                                        data-bind="attr: { style: 'width:' + $data.progressPercent + '%' }"
-                                        aria-valuemin="0" aria-valuemax="100">
-                                        <span data-bind="text: $data.progressString"></span>
+            <div class="modal-body position-static tab-content">
+
+                <div id="machineFossilReviver" class="tab-pane fade in active show">
+                    <div class="row no-gutters justify-content-center">
+                        <!-- ko foreach: state._fossils -->
+                        <div class="col-3 eggSlot">
+                            <div class="content">
+                                <div style="margin-top: 20px;">
+                                    <!-- ko if: $data.fossil -->
+                                    <img data-bind="attr: { src: FossilReviver.getImage($data.data.name) }"/>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                            data-bind="attr: { style: 'width:' + $data.progressPercent + '%' }"
+                                            aria-valuemin="0" aria-valuemax="100">
+                                            <span data-bind="text: $data.progressString"></span>
+                                        </div>
                                     </div>
+                                    <!-- /ko -->
                                 </div>
-                                <!-- /ko -->
                             </div>
                         </div>
-                    </div>
-                    <!-- /ko -->
-                    <!-- ko if: state.queue.length > 0 -->
-                    <div class="col-12">
-                        <div id="hatcheryQueue" class="card-footer p-1" data-bind="foreach: state.queue">
-                            <div class="queuePokemon clickable bg-primary" style="width: 8%" data-bind="click: function(){ state.removeFromQueue($index()) }">
-                            <img src="" data-bind="attr: { src: FossilReviver.getImage($data) }">
+                        <!-- /ko -->
+                        <!-- ko if: state.queue.length > 0 -->
+                        <div class="col-12">
+                            <div id="hatcheryQueue" class="card-footer p-1" data-bind="foreach: state.queue">
+                                <div class="queuePokemon clickable bg-primary" style="width: 8%" data-bind="click: function(){ state.removeFromQueue($index()) }">
+                                <img src="" data-bind="attr: { src: FossilReviver.getImage($data) }">
+                                </div>
                             </div>
                         </div>
+                        <!-- /ko -->
                     </div>
+                    <p class="bg-warning my-0" data-bind="visible: !FossilReviver.getAvailableFossils().length">
+                        You don't have any fossils to revive.
+                    </p>
+
+                    <!-- ko if: FossilReviver.getAvailableFossils().length -->
+                    <ul class="row justify-content-center p-0" data-bind="foreach: FossilReviver.getAvailableFossils()">
+                        <li class="eggSlot col-3 col-md-3 pokedexEntry text-nowrap"
+                            data-bind="css: { 'disabled': FossilReviver.isDisabled(state, $data) }">
+                            <span style="top: 0; border-top-left-radius: 6px; border-top-right-radius: 6px;" data-bind="text: $data">fossil</span>
+                            <img src="" width="80px" data-bind="attr:{ src: FossilReviver.getImage($data) }">
+                            <span style="bottom: 0; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px"
+                            data-bind="text: 'Amount: ' + BagHandler.amount({type: ItemType.underground, id: $data })()">Amount</span>
+                            <a class="overlay" href="#revive" data-bind="click: function() { state.addToMachine($data); }"></a>
+                        </li>
+                    </ul>
                     <!-- /ko -->
                 </div>
-                <p class="bg-warning my-0" data-bind="visible: !FossilReviver.getAvailableFossils().length">
-                    You don't have any fossils to revive.
-                </p>
 
-                <!-- ko if: FossilReviver.getAvailableFossils().length -->
-                <ul class="row justify-content-center p-0" data-bind="foreach: FossilReviver.getAvailableFossils()">
-                    <li class="eggSlot col-3 col-md-3 pokedexEntry text-nowrap"
-                        data-bind="css: { 'disabled': FossilReviver.isDisabled(state, $data) }">
-                        <span style="top: 0; border-top-left-radius: 6px; border-top-right-radius: 6px;" data-bind="text: $data">fossil</span>
-                        <img src="" width="80px" data-bind="attr:{ src: FossilReviver.getImage($data) }">
-                        <span style="bottom: 0; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px"
-                        data-bind="text: 'Amount: ' + BagHandler.amount({type: ItemType.underground, id: $data })()">Amount</span>
-                        <a class="overlay" href="#revive" data-bind="click: function() { state.addToMachine($data); }"></a>
-                    </li>
-                </ul>
-                <!-- /ko -->
+                <div id="machineFossilReviverHelp" class="tab-pane fade">
+                    <p>The Fossil Reviver is used to revive Fossil Pokémon.</p>
+
+                    <p>Specific Fossil types must be researched before they can be revived.</p>
+
+                    <p>Click on the available Fossils to add them to the machine, and activate the machine so start the revival process.
+                        <br>Once the Queue Research is completed, additional Fossils can be added to a queue to be automatically revived.
+                    </p>
+                </div>
             </div>
+
 
             <div class="modal-footer">
                 <button type="button" class="btn mr-auto"
@@ -13635,85 +13711,102 @@ aria-labelledby="IncubatorModalLabel" aria-hidden="true">
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div>
+                <ul class="nav nav-tabs nav-fill">
+                    <li class="nav-item"><a data-toggle='tab' class='nav-link active' href="#machineIncubator">Machine</a></li>
+                    <li class='nav-item'><a data-toggle='tab' class='nav-link' href="#machineIncubatorHelp">Help</a></li>
+                </ul>
+            </div>
 
-            <div class="modal-body">
-                <!-- ko if: App.game.lab.isResearched(Lab.Research.incubator_fuel) -->
-                <div class="row no-gutters justify-content-center">
-                    <h4>
-                        <span data-bind="text: 'Fuel: ' + state.fuel.toFixed(1) + '/' + Incubator.fuelCapacity()">Fuel</span>
-                    </h4>
-                </div>
-                <div class="row justify-content-center" data-bind="foreach: Incubator.getAvailableFuels()">
-                    <div class="col-6 col-sm-4 col-lg-3">
-                       <button class="shopItem clickable btn btn-block btn-secondary"
-                            data-bind="click: function() {Incubator.selectedFuel($data.id);},
-                            css: { active: Incubator.selectedFuel() == $data.id },
-                            attr: { disabled: BagHandler.amount($data.item)() <= 0 }">
-                            <img src="" height="36px" data-bind="attr:{ src: BagHandler.image($data.item) }">
-                            <p data-bind="text: BagHandler.displayName($data.item)">Fuel Name</p>
-                            <div>
-                                <small>
-                                    <span class="" data-bind="text: 'Amount: ' + BagHandler.amount($data.item)()">
-                                        Amount:
-                                    </span>
-                                </small>
-                            </div>
-                            <div>
-                                <small>
-                                    <span class="" data-bind="text: 'Fuel: ' + Incubator.getFuelTotalAmount($data).toFixed(1)">
-                                        Fuel:
-                                    </span>
-                                </small>
-                            </div>
-                        </button>
+            <div class="modal-body tab-content">
+
+                <div id="machineIncubator" class="tab-pane fade in active show">
+                    <!-- ko if: App.game.lab.isResearched(Lab.Research.incubator_fuel) -->
+                    <div class="row no-gutters justify-content-center">
+                        <h4>
+                            <span data-bind="text: 'Fuel: ' + state.fuel.toFixed(1) + '/' + Incubator.fuelCapacity()">Fuel</span>
+                        </h4>
                     </div>
-                </div>
-                <div class="justify-content-center">
-                    <div class="input-group m-0" style="margin-bottom: 6px; margin-top: 6px">
-                        <div class="input-group-prepend">
-                            <button class="btn btn-warning btn-outline-dark smallButton smallFont" onclick="Incubator.resetAmount()">
-                                Reset
-                            </button>
-                        </div>
-                        <input id="amountOfFuel" type="number" class="outline-dark form-control form-control-number"
-                                value="1" min="1" required name="amountOfFuel"
-                                oninput="Incubator.amount(parseInt($(this).val().toString(), 10) || 0);"
-                                onchange="Incubator.amount(parseInt($(this).val().toString(), 10) || 0);" title=""/>
-                        <div class="input-group-append">
-                            <!-- ko if: Settings.getSetting('shopButtons').observableValue() == 'original' -->
-                                <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Incubator.increaseAmount(10)">
-                                    +10
-                                </button>
-                                <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Incubator.increaseAmount(100)">
-                                    +100
-                                </button>
-                            <!-- /ko -->
-                            <!-- ko if: Settings.getSetting('shopButtons').observableValue() == 'multiplication' -->
-                                <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Incubator.multiplyAmount(10)">
-                                    &times;10
-                                </button>
-                                <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Incubator.multiplyAmount(0.1)">
-                                    &div;10
-                                </button>
-                            <!-- /ko -->
-                            <!-- ko if: Settings.getSetting('shopButtons').observableValue() == 'bigplus' -->
-                                <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Incubator.increaseAmount(100)">
-                                    +100
-                                </button>
-                                <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Incubator.increaseAmount(1000)">
-                                    +1000
-                                </button>
-                            <!-- /ko -->
-                            <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { Incubator.maxAmount(state); }">
-                                Max
-                            </button>
-                            <button class="btn-outline-dark btn btn-success smallButton smallFont" data-bind="click: function() {state.addFuel();}">
-                                Fuel
+                    <div class="row justify-content-center" data-bind="foreach: Incubator.getAvailableFuels()">
+                        <div class="col-6 col-sm-4 col-lg-3">
+                        <button class="shopItem clickable btn btn-block btn-secondary"
+                                data-bind="click: function() {Incubator.selectedFuel($data.id);},
+                                css: { active: Incubator.selectedFuel() == $data.id },
+                                attr: { disabled: BagHandler.amount($data.item)() <= 0 }">
+                                <img src="" height="36px" data-bind="attr:{ src: BagHandler.image($data.item) }">
+                                <p data-bind="text: BagHandler.displayName($data.item)">Fuel Name</p>
+                                <div>
+                                    <small>
+                                        <span class="" data-bind="text: 'Amount: ' + BagHandler.amount($data.item)()">
+                                            Amount:
+                                        </span>
+                                    </small>
+                                </div>
+                                <div>
+                                    <small>
+                                        <span class="" data-bind="text: 'Fuel: ' + Incubator.getFuelTotalAmount($data).toFixed(1)">
+                                            Fuel:
+                                        </span>
+                                    </small>
+                                </div>
                             </button>
                         </div>
                     </div>
+                    <div class="justify-content-center">
+                        <div class="input-group m-0" style="margin-bottom: 6px; margin-top: 6px">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-warning btn-outline-dark smallButton smallFont" onclick="Incubator.resetAmount()">
+                                    Reset
+                                </button>
+                            </div>
+                            <input id="amountOfFuel" type="number" class="outline-dark form-control form-control-number"
+                                    value="1" min="1" required name="amountOfFuel"
+                                    oninput="Incubator.amount(parseInt($(this).val().toString(), 10) || 0);"
+                                    onchange="Incubator.amount(parseInt($(this).val().toString(), 10) || 0);" title=""/>
+                            <div class="input-group-append">
+                                <!-- ko if: Settings.getSetting('shopButtons').observableValue() == 'original' -->
+                                    <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Incubator.increaseAmount(10)">
+                                        +10
+                                    </button>
+                                    <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Incubator.increaseAmount(100)">
+                                        +100
+                                    </button>
+                                <!-- /ko -->
+                                <!-- ko if: Settings.getSetting('shopButtons').observableValue() == 'multiplication' -->
+                                    <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Incubator.multiplyAmount(10)">
+                                        &times;10
+                                    </button>
+                                    <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Incubator.multiplyAmount(0.1)">
+                                        &div;10
+                                    </button>
+                                <!-- /ko -->
+                                <!-- ko if: Settings.getSetting('shopButtons').observableValue() == 'bigplus' -->
+                                    <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Incubator.increaseAmount(100)">
+                                        +100
+                                    </button>
+                                    <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Incubator.increaseAmount(1000)">
+                                        +1000
+                                    </button>
+                                <!-- /ko -->
+                                <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { Incubator.maxAmount(state); }">
+                                    Max
+                                </button>
+                                <button class="btn-outline-dark btn btn-success smallButton smallFont" data-bind="click: function() {state.addFuel();}">
+                                    Fuel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
                 </div>
-                <!-- /ko -->
+
+                <div id="machineIncubatorHelp" class="tab-pane fade">
+                    <p>The Incubator will increase the number of Hatchery queue slots when active.</p>
+
+                    <p>Once the Fuel Research is completed, you can fuel the Incubator with various items to decrease hatching time.
+                        <br>Some items require additional Research before they can be used as fuel.
+                    </p>
+                </div>
             </div>
 
             <div class="modal-footer">
@@ -13743,85 +13836,102 @@ aria-labelledby="GeneratorModalLabel" aria-hidden="true">
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div>
+                <ul class="nav nav-tabs nav-fill">
+                    <li class="nav-item"><a data-toggle='tab' class='nav-link active' href="#machineGenerator">Machine</a></li>
+                    <li class='nav-item'><a data-toggle='tab' class='nav-link' href="#machineGeneratorHelp">Help</a></li>
+                </ul>
+            </div>
 
-            <div class="modal-body">
-                <!-- ko if: App.game.lab.isResearched(Lab.Research.generator_fuel) -->
-                <div class="row no-gutters justify-content-center">
-                    <h4>
-                        <span data-bind="text: 'Fuel: ' + state.fuel.toFixed(1) + '/' + Generator.fuelCapacity()">Fuel</span>
-                    </h4>
-                </div>
-                <div class="row justify-content-center" data-bind="foreach: Generator.getAvailableFuels()">
-                    <div class="col-6 col-sm-4 col-lg-3">
-                       <button class="shopItem clickable btn btn-block btn-secondary"
-                            data-bind="click: function() {Generator.selectedFuel($data.id);},
-                            css: { active: Generator.selectedFuel() == $data.id },
-                            attr: { disabled: BagHandler.amount($data.item)() <= 0 }">
-                            <img src="" height="36px" data-bind="attr:{ src: BagHandler.image($data.item) }">
-                            <p data-bind="text: BagHandler.displayName($data.item)">Fuel Name</p>
-                            <div>
-                                <small>
-                                    <span class="" data-bind="text: 'Amount: ' + BagHandler.amount($data.item)()">
-                                        Amount:
-                                    </span>
-                                </small>
-                            </div>
-                            <div>
-                                <small>
-                                    <span class="" data-bind="text: 'Fuel: ' + Generator.getFuelTotalAmount($data).toFixed(1)">
-                                        Fuel:
-                                    </span>
-                                </small>
-                            </div>
-                        </button>
+            <div class="modal-body tab-content">
+
+                <div id="machineGenerator" class="tab-pane fade in active show">
+                    <!-- ko if: App.game.lab.isResearched(Lab.Research.generator_fuel) -->
+                    <div class="row no-gutters justify-content-center">
+                        <h4>
+                            <span data-bind="text: 'Fuel: ' + state.fuel.toFixed(1) + '/' + Generator.fuelCapacity()">Fuel</span>
+                        </h4>
                     </div>
-                </div>
-                <div class="justify-content-center">
-                    <div class="input-group m-0" style="margin-bottom: 6px; margin-top: 6px">
-                        <div class="input-group-prepend">
-                            <button class="btn btn-warning btn-outline-dark smallButton smallFont" onclick="Generator.resetAmount()">
-                                Reset
-                            </button>
-                        </div>
-                        <input id="amountOfFuel" type="number" class="outline-dark form-control form-control-number"
-                                value="1" min="1" required name="amountOfFuel"
-                                oninput="Generator.amount(parseInt($(this).val().toString(), 10) || 0);"
-                                onchange="Generator.amount(parseInt($(this).val().toString(), 10) || 0);" title=""/>
-                        <div class="input-group-append">
-                            <!-- ko if: Settings.getSetting('shopButtons').observableValue() == 'original' -->
-                                <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Generator.increaseAmount(10)">
-                                    +10
-                                </button>
-                                <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Generator.increaseAmount(100)">
-                                    +100
-                                </button>
-                            <!-- /ko -->
-                            <!-- ko if: Settings.getSetting('shopButtons').observableValue() == 'multiplication' -->
-                                <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Generator.multiplyAmount(10)">
-                                    &times;10
-                                </button>
-                                <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Generator.multiplyAmount(0.1)">
-                                    &div;10
-                                </button>
-                            <!-- /ko -->
-                            <!-- ko if: Settings.getSetting('shopButtons').observableValue() == 'bigplus' -->
-                                <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Generator.increaseAmount(100)">
-                                    +100
-                                </button>
-                                <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Generator.increaseAmount(1000)">
-                                    +1000
-                                </button>
-                            <!-- /ko -->
-                            <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { Generator.maxAmount(state); }">
-                                Max
-                            </button>
-                            <button class="btn-outline-dark btn btn-success smallButton smallFont" data-bind="click: function() {state.addFuel();}">
-                                Fuel
+                    <div class="row justify-content-center" data-bind="foreach: Generator.getAvailableFuels()">
+                        <div class="col-6 col-sm-4 col-lg-3">
+                        <button class="shopItem clickable btn btn-block btn-secondary"
+                                data-bind="click: function() {Generator.selectedFuel($data.id);},
+                                css: { active: Generator.selectedFuel() == $data.id },
+                                attr: { disabled: BagHandler.amount($data.item)() <= 0 }">
+                                <img src="" height="36px" data-bind="attr:{ src: BagHandler.image($data.item) }">
+                                <p data-bind="text: BagHandler.displayName($data.item)">Fuel Name</p>
+                                <div>
+                                    <small>
+                                        <span class="" data-bind="text: 'Amount: ' + BagHandler.amount($data.item)()">
+                                            Amount:
+                                        </span>
+                                    </small>
+                                </div>
+                                <div>
+                                    <small>
+                                        <span class="" data-bind="text: 'Fuel: ' + Generator.getFuelTotalAmount($data).toFixed(1)">
+                                            Fuel:
+                                        </span>
+                                    </small>
+                                </div>
                             </button>
                         </div>
                     </div>
+                    <div class="justify-content-center">
+                        <div class="input-group m-0" style="margin-bottom: 6px; margin-top: 6px">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-warning btn-outline-dark smallButton smallFont" onclick="Generator.resetAmount()">
+                                    Reset
+                                </button>
+                            </div>
+                            <input id="amountOfFuel" type="number" class="outline-dark form-control form-control-number"
+                                    value="1" min="1" required name="amountOfFuel"
+                                    oninput="Generator.amount(parseInt($(this).val().toString(), 10) || 0);"
+                                    onchange="Generator.amount(parseInt($(this).val().toString(), 10) || 0);" title=""/>
+                            <div class="input-group-append">
+                                <!-- ko if: Settings.getSetting('shopButtons').observableValue() == 'original' -->
+                                    <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Generator.increaseAmount(10)">
+                                        +10
+                                    </button>
+                                    <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Generator.increaseAmount(100)">
+                                        +100
+                                    </button>
+                                <!-- /ko -->
+                                <!-- ko if: Settings.getSetting('shopButtons').observableValue() == 'multiplication' -->
+                                    <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Generator.multiplyAmount(10)">
+                                        &times;10
+                                    </button>
+                                    <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Generator.multiplyAmount(0.1)">
+                                        &div;10
+                                    </button>
+                                <!-- /ko -->
+                                <!-- ko if: Settings.getSetting('shopButtons').observableValue() == 'bigplus' -->
+                                    <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Generator.increaseAmount(100)">
+                                        +100
+                                    </button>
+                                    <button class="btn btn-secondary smallButton smallFont" type="button" onclick="Generator.increaseAmount(1000)">
+                                        +1000
+                                    </button>
+                                <!-- /ko -->
+                                <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { Generator.maxAmount(state); }">
+                                    Max
+                                </button>
+                                <button class="btn-outline-dark btn btn-success smallButton smallFont" data-bind="click: function() {state.addFuel();}">
+                                    Fuel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
                 </div>
-                <!-- /ko -->
+
+                <div id="machineGeneratorHelp" class="tab-pane fade">
+                    <p>The Generator will increase the speed of Machines in the Lab when activated.</p>
+
+                    <p>Once the Fuel Research is completed, you can fuel the Generator with various items to boost the effect for some time.
+                        <br>Some items require additional Research before they can be used as fuel.
+                    </p>
+                </div>
             </div>
 
             <div class="modal-footer">
@@ -13851,59 +13961,79 @@ aria-labelledby="PokéballFactoryModalLabel" aria-hidden="true">
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div>
+                <ul class="nav nav-tabs nav-fill">
+                    <li class="nav-item"><a data-toggle='tab' class='nav-link active' href="#machinePokeballFactory">Machine</a></li>
+                    <li class='nav-item'><a data-toggle='tab' class='nav-link' href="#machinePokeballFactoryHelp">Help</a></li>
+                </ul>
+            </div>
 
-            <div class="modal-body position-static">
-                <div class="row justify-content-center">
-                    <li class="col-sm-4 col-md-3 col-lg-2 pokedexEntry" style="background: #e8e8f0">
-                        <span style="top: 0; border-top-left-radius: 6px; border-top-right-radius: 6px;" data-bind="text: PokeballFactory.blueprints[state.blueprint].name">Name</span>
-                            <div style="width: 100%; height: 120px;">
-                                <img src="" style="padding: 20px 0px; width:100%;height:100%;object-fit:contain;" data-bind="attr:{ src: BagHandler.image(PokeballFactory.blueprints[state.blueprint].item) }">
-                            </div>
-                            <span style="bottom: 0; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px" data-bind="text: 'Amount: ' + BagHandler.amount(PokeballFactory.blueprints[state.blueprint].item)()">Amount</span>
-                    </li>
-                </div>
-                <div class="row justify-content-center" data-bind="foreach: PokeballFactory.blueprints[state.blueprint].cost">
-                    <h4 class="col-6 col-sm-4 col-lg-2">
-                        <span style="display: inline;">
-                            <img style="height: 24px" data-bind="attr: { src: BagHandler.image($data.item) },
-                            tooltip: { title: BagHandler.displayName($data.item), trigger: 'hover', placement: 'top' }"/>
-                            <span data-bind="text: GameConstants.formatNumber($data.amount) + '/' + GameConstants.formatNumber(BagHandler.amount($data.item)())">0</span>
-                        </span>
-                    </h4>
-                </div>
-                <div class="row no-gutters">
-                    <div class="btn-group btn-block col-6 dropdown">
-                        <button type="button" class='btn btn-primary btn-block p-0'
-                        data-bind="tooltip: {title: PokeballFactory.blueprints[state.blueprint].costTooltip, trigger: 'hover', placement: 'right', html: true}">
-                        <span data-bind="text: PokeballFactory.blueprints[state.blueprint].name">Blueprint Name</span>
-                        </button>
-                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split active"
-                            data-boundary="viewport" data-bind="text: '&nbsp;', enable: !state.active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right" data-bind="foreach: PokeballFactory.getAvailableBlueprints()">
-                            <button class="dropdown-item" type="button"
-                                data-bind="text: $data.name,
-                                click: function() {state.blueprint = $data.type;}"></button>
-                        </div>
+            <div class="modal-body position-static tab-content">
+
+                <div id="machinePokeballFactory" class="tab-pane fade in active show">
+                    <div class="row justify-content-center">
+                        <li class="col-sm-4 col-md-3 col-lg-2 pokedexEntry" style="background: #e8e8f0">
+                            <span style="top: 0; border-top-left-radius: 6px; border-top-right-radius: 6px;" data-bind="text: PokeballFactory.blueprints[state.blueprint].name">Name</span>
+                                <div style="width: 100%; height: 120px;">
+                                    <img src="" style="padding: 20px 0px; width:100%;height:100%;object-fit:contain;" data-bind="attr:{ src: BagHandler.image(PokeballFactory.blueprints[state.blueprint].item) }">
+                                </div>
+                                <span style="bottom: 0; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px" data-bind="text: 'Amount: ' + BagHandler.amount(PokeballFactory.blueprints[state.blueprint].item)()">Amount</span>
+                        </li>
                     </div>
-                    <div class="col-6">
-                        <div class="input-group">
-                            <input id="queueInput" type="number" class="outline-dark form-control form-control-number"
-                            value="0" min="0" required name="queueInput"
-                            data-bind="textInput: state.queueInput, enable: !state.active"/>
-                            <div class="input-group-append">
-                                <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { state.setMaxQueue(); }, enable: !state.active">
-                                    Max
-                                </button>
+                    <div class="row justify-content-center" data-bind="foreach: PokeballFactory.blueprints[state.blueprint].cost">
+                        <h4 class="col-6 col-sm-4 col-lg-2">
+                            <span style="display: inline;">
+                                <img style="height: 24px" data-bind="attr: { src: BagHandler.image($data.item) },
+                                tooltip: { title: BagHandler.displayName($data.item), trigger: 'hover', placement: 'top' }"/>
+                                <span data-bind="text: GameConstants.formatNumber($data.amount) + '/' + GameConstants.formatNumber(BagHandler.amount($data.item)())">0</span>
+                            </span>
+                        </h4>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="btn-group btn-block col-6 dropdown">
+                            <button type="button" class='btn btn-primary btn-block p-0'
+                            data-bind="tooltip: {title: PokeballFactory.blueprints[state.blueprint].costTooltip, trigger: 'hover', placement: 'right', html: true}">
+                            <span data-bind="text: PokeballFactory.blueprints[state.blueprint].name">Blueprint Name</span>
+                            </button>
+                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split active"
+                                data-boundary="viewport" data-bind="text: '&nbsp;', enable: !state.active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" data-bind="foreach: PokeballFactory.getAvailableBlueprints()">
+                                <button class="dropdown-item" type="button"
+                                    data-bind="text: $data.name,
+                                    click: function() {state.blueprint = $data.type;}"></button>
                             </div>
                         </div>
+                        <div class="col-6">
+                            <div class="input-group">
+                                <input id="queueInput" type="number" class="outline-dark form-control form-control-number"
+                                value="0" min="0" required name="queueInput"
+                                data-bind="textInput: state.queueInput, enable: !state.active"/>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary smallButton smallFont" type="button" data-bind="click: function() { state.setMaxQueue(); }, enable: !state.active">
+                                        Max
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-bind="attr: { style: 'width:' + state.progressPercent + '%' }"
+                        aria-valuemin="0" aria-valuemax="100">
+                            <span data-bind="text: state.progressString">Progress</span>
+                        </div>
                     </div>
                 </div>
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" data-bind="attr: { style: 'width:' + state.progressPercent + '%' }"
-                    aria-valuemin="0" aria-valuemax="100">
-                        <span data-bind="text: state.progressString">Progress</span>
-                    </div>
+
+                <div id="machinePokeballFactoryHelp" class="tab-pane fade">
+                    <p>The Pokéball Factory is used to produce Pokéballs.</p>
+
+                    <p>Pokéball Blueprints can be unlocked with Research.</p>
+
+                    <p>Set the number to the amount of Pokéballs for a Pokéball type that you want, and then activate the machine.
+                    <br>Activating the machine will disable all configuration controls. To change the configuration, you must deactivate the machine.
+                    <br>The machine will run until either the required materials run out, or the queue number is 0.
+                    <br>Note that deactivating the machine will lose all current progress for the current fabrication.</p>
                 </div>
             </div>
 
